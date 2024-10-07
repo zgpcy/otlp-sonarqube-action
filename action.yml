@@ -9,7 +9,7 @@ branding:
 
 # Define your inputs here.
 inputs:
-  otlpEendpoint:
+  otlpEndpoint:
     description: The destination endpoint to export OpenTelemetry traces to
     required: true
   headers:

@@ -8,7 +8,7 @@ import SonarQube from './sonarqube'
  */
 export async function run(): Promise<void> {
   try {
-    const otlpEndpoint: string = core.getInput('endpoint')
+    const otlpEndpoint: string = core.getInput('otlpEndpoint')
     const headers: string = core.getInput('headers')
     const prefixes: string = core.getInput('prefixes')
     const metricNamespace: string =
