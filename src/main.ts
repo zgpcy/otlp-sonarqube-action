@@ -1,5 +1,6 @@
 import * as core from '@actions/core'
-import { wait } from './wait'
+import { initializeOTLP, sendMetrics } from './otlp'
+import SonarQube from './sonarqube'
 
 /**
  * The main function for the action.
@@ -7,20 +8,39 @@ import { wait } from './wait'
  */
 export async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
+    const otlpEndpoint: string = core.getInput('endpoint')
+    const headers: string = core.getInput('headers')
+    const prefixes: string = core.getInput('prefixes')
+    const metricNamespace: string =
+      core.getInput('metricNamespace') ||
+      process.env.OTLP_METRIC_NAMESPACE ||
+      ''
+    const otlpServiceNameAttr =
+      core.getInput('serviceNameAttr') ||
+      process.env.OTLP_SERVICE_NAME_ATTR ||
+      ''
+    const otlpServiceVersionAttr =
+      core.getInput('serviceVersionAttr') ||
+      process.env.OTLP_SERVICE_VERSION_ATTR ||
+      ''
 
-    // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
-    core.debug(`Waiting ${ms} milliseconds ...`)
+    const sonarqubeEndpoint: string =
+      core.getInput('sonarqubeEndpoint') || process.env.SONARQUBE_URL || ''
+    const token: string =
+      core.getInput('sonarqubeToken') || process.env.SONARQUBE_TOKEN || ''
 
-    // Log the current timestamp, wait, then log the new timestamp
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    initializeOTLP({
+      endpoint: otlpEndpoint,
+      headers: headers,
+      metricNamespace: metricNamespace,
+      serviceName: otlpServiceNameAttr,
+      serviceVersion: otlpServiceVersionAttr
+    })
 
-    // Set outputs for other workflow steps to use
-    core.setOutput('time', new Date().toTimeString())
+    const sq = new SonarQube(sonarqubeEndpoint, token, prefixes.split(','))
+    const metrics = await sq.getSecurityHotspotsMetrics()
+    await sendMetrics(metrics)
   } catch (error) {
-    // Fail the workflow run if an error occurs
     if (error instanceof Error) core.setFailed(error.message)
   }
 }

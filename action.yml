@@ -1,6 +1,6 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'OTLP Security Hotspots Exporter'
+description: 'OTLP exporter for sonarqube hotspots'
+author: 'zgpcy'
 
 # Add your action's branding here. This will appear on the GitHub Marketplace.
 branding:
@@ -9,16 +9,34 @@ branding:
 
 # Define your inputs here.
 inputs:
-  milliseconds:
-    description: 'Your input description here'
+  otlpEendpoint:
+    description: The destination endpoint to export OpenTelemetry traces to
     required: true
-    default: '1000'
-
-# Define your outputs here.
-outputs:
-  time:
-    description: 'Your output description here'
-
+  headers:
+    description:
+      Network Headers for the destination endpoint to export OpenTelemetry
+      traces to
+    required: false
+  metricNamespace:
+    description: The prefix to use for produced metrics
+    required: true
+  serviceNameAttr:
+    description: The resource.service attribute
+    default: trivy-ci-action
+    required: false
+  serviceVersionAttr:
+    description: The resource.version attribute
+    default: 1.0.0
+    required: false
+  sonarqubeEndpoint:
+    description: The endpoint of sonarqube
+    required: true
+  sonarqubeToken:
+    description: Token for sonarqube access
+    required: true
+  prefixes:
+    description: a list of prefixes to filt
+    required: false
 runs:
   using: node20
   main: dist/index.js
