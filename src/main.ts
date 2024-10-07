@@ -30,8 +30,8 @@ export async function run(): Promise<void> {
       core.getInput('sonarqubeToken') || process.env.SONARQUBE_TOKEN || ''
 
 
-    core.debug(`Using OTLP endpoint: ${otlpEndpoint}`)
-    core.debug(`Using SonarQube endpoint: ${sonarqubeEndpoint}`)
+    core.info(`Using OTLP endpoint: ${otlpEndpoint}`)
+    core.info(`Using SonarQube endpoint: ${sonarqubeEndpoint}`)
     core.debug(`Using prefixes: ${prefixes}`)
     core.debug(`Using metricNamespace: ${metricNamespace}`)
     core.debug(`Using serviceNameAttr: ${otlpServiceNameAttr}`)
