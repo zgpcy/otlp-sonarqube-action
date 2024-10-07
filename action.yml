@@ -35,7 +35,7 @@ inputs:
     description: Token for sonarqube access
     required: true
   prefixes:
-    description: a list of prefixes to filt
+    description: a comma-separated list with prefixes for filtering
     required: false
 runs:
   using: node20
