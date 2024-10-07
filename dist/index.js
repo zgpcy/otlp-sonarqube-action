@@ -59397,7 +59397,7 @@ const sonarqube_1 = __importDefault(__nccwpck_require__(7069));
  */
 async function run() {
     try {
-        const otlpEndpoint = core.getInput('endpoint');
+        const otlpEndpoint = core.getInput('otlpEndpoint');
         const headers = core.getInput('headers');
         const prefixes = core.getInput('prefixes');
         const metricNamespace = core.getInput('metricNamespace') ||
@@ -59411,6 +59411,12 @@ async function run() {
             '';
         const sonarqubeEndpoint = core.getInput('sonarqubeEndpoint') || process.env.SONARQUBE_URL || '';
         const token = core.getInput('sonarqubeToken') || process.env.SONARQUBE_TOKEN || '';
+        core.info(`Using OTLP endpoint: ${otlpEndpoint}`);
+        core.info(`Using SonarQube endpoint: ${sonarqubeEndpoint}`);
+        core.debug(`Using prefixes: ${prefixes}`);
+        core.debug(`Using metricNamespace: ${metricNamespace}`);
+        core.debug(`Using serviceNameAttr: ${otlpServiceNameAttr}`);
+        core.debug(`Using serviceVersionAttr: ${otlpServiceVersionAttr}`);
         (0, otlp_1.initializeOTLP)({
             endpoint: otlpEndpoint,
             headers: headers,
