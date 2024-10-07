@@ -1,4 +1,5 @@
 import { OtlpMetric, SecurityHotspot, SonarQubeProject } from './types'
+import * as core from '@actions/core'
 
 export default class SonarQube {
   private requestHeaders: Headers = new Headers()
@@ -103,12 +104,14 @@ export default class SonarQube {
   public getSecurityHotspotsMetrics = async (): Promise<OtlpMetric[]> => {
     const otlpMetrics: OtlpMetric[] = []
     const projects = await this.getAllProjects(this.prefixes)
+    core.debug(`Found ${projects.length} projects`)
     for (const project of projects) {
       const hotspots = await this.getSecurityHotspots(
         project.key,
         project.owner,
         project.repository
       )
+      core.debug(`Found ${hotspots.length} hotspots for ${project.key}`)
       for (const hotspot of hotspots) {
         const otlpMetric: OtlpMetric = {
           name: 'hotspot.detected',
