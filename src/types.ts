@@ -27,6 +27,8 @@ export interface SecurityHotspot {
   component: string
   securityCategory: string
   vulnerabilityProbability: string
+  resolution: string
+  status: string
   message: string
   link: string
 }

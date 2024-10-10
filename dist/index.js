@@ -59613,6 +59613,8 @@ class SonarQube {
                     message: hotspot.message,
                     owner: owner,
                     repository: repository,
+                    resolution: hotspot.resolution,
+                    status: hotspot.status,
                     link: this.url + '/security_hotspots?id=' + projectKey
                 };
                 hotspotsResult.push(hp);
@@ -59644,6 +59646,8 @@ class SonarQube {
                         securityCategory: hotspot.securityCategory,
                         vulnerabilityProbability: hotspot.vulnerabilityProbability,
                         message: hotspot.message,
+                        status: hotspot.status,
+                        resolution: hotspot.resolution,
                         link: hotspot.link
                     },
                     value: 1
